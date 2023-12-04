@@ -135,6 +135,12 @@ let appliedFilters = {
   price: null,
 };
 
+const noResultFounded = document.createElement("h4");
+noResultFounded.className = "pc-no-results-message";
+noResultFounded.style.display = "none";
+productSection.appendChild(noResultFounded);
+
+
 const toggleFooterUlInResponsiveVersion = () => {
   const titlesForFootersUl = document.querySelectorAll(".pc-h5");
 
@@ -220,15 +226,23 @@ const applyFilters = () => {
     );
   }
 
-  productSection.innerHTML = "";
-  filteredProducts.forEach((product) => {
-    productSection.innerHTML += productTemplate(
-      product.image,
-      product.name,
-      product.price,
-      product.seller
-    );
-  });
+  if (filteredProducts.length === 0) {
+    noResultFounded.textContent = "No se han encontrado resultados";
+    noResultFounded.style.display = "block";
+    productSection.innerHTML = "";
+    productSection.appendChild(noResultFounded);
+  } else {
+    noResultFounded.textContent = "";
+    productSection.innerHTML = "";
+    filteredProducts.forEach((product) => {
+      productSection.innerHTML += productTemplate(
+        product.image,
+        product.name,
+        product.price,
+        product.seller
+      );
+    });
+  }
 };
 
 const onCleanFiltersButton = () => {
